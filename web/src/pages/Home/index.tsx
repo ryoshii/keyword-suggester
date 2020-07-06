@@ -1,4 +1,5 @@
 import React, { useState, useCallback, SyntheticEvent } from 'react';
+import { FiEdit, FiBox, FiSearch, FiXCircle } from 'react-icons/fi';
 
 import {
   Container,
@@ -7,6 +8,7 @@ import {
   Form,
   Input,
   SearchButton,
+  ResultContent,
   Result,
   Item,
   ShowTextareaButton,
@@ -20,12 +22,15 @@ const Home: React.FC = () => {
 
   const handleToogleShowTextarea = useCallback(() => {
     if (!showTextarea) {
-      const compiledWordsToText = keywords.join(',');
-      setKeywordsText(compiledWordsToText);
+      const compiledKeywords = keywords.join(',');
+      setKeywordsText(compiledKeywords);
     } else {
-      const compiledWordsToArray = keywordsText.split(',');
-      setKeywords([...compiledWordsToArray]);
+      const compiledKeywordsText = keywordsText.split(',').filter((word) => {
+        return word.trim() !== '';
+      });
+      setKeywords(compiledKeywordsText);
     }
+
     setShowTextarea(!showTextarea);
   }, [showTextarea, keywords, keywordsText]);
 
@@ -40,6 +45,7 @@ const Home: React.FC = () => {
       'Palavra 7',
     ];
 
+    setShowTextarea(false);
     setKeywords([...fakeWords]);
   }, []);
 
@@ -50,33 +56,62 @@ const Home: React.FC = () => {
     [],
   );
 
+  const handleRemoveItem = useCallback(
+    (id) => {
+      const updatedKeywords = keywords.filter((_word, index) => index !== id);
+      setKeywords(updatedKeywords);
+    },
+    [keywords],
+  );
+
   return (
     <Container>
       <Content>
         <Title># Keyword suggester</Title>
         <Form onSubmit={handleSubmit}>
           <Input name="param" placeholder="subject" />
-          <SearchButton type="submit">Search</SearchButton>
+          <SearchButton type="submit">
+            <FiSearch />
+            <span>Search</span>
+          </SearchButton>
         </Form>
-        {!showTextarea && (
-          <Result>
-            {keywords &&
-              keywords.map((word, index) => <Item key={index}>{word}</Item>)}
-          </Result>
-        )}
 
-        {showTextarea && (
-          <ResultText
-            name="description"
-            onChange={handleTextareaChange}
-            defaultValue={keywordsText}
-          />
-        )}
+        <ResultContent>
+          {!showTextarea && (
+            <Result>
+              {keywords &&
+                keywords.map((word, index) => (
+                  <Item key={index}>
+                    <span>{word}</span>
+                    <FiXCircle onClick={() => handleRemoveItem(index)} />
+                  </Item>
+                ))}
+            </Result>
+          )}
 
-        <ShowTextareaButton onClick={handleToogleShowTextarea}>
-          {!showTextarea && 'Edit mode'}
-          {showTextarea && 'Box mode'}
-        </ShowTextareaButton>
+          {showTextarea && (
+            <ResultText
+              name="description"
+              onChange={handleTextareaChange}
+              defaultValue={keywordsText}
+            />
+          )}
+
+          <ShowTextareaButton onClick={handleToogleShowTextarea}>
+            {!showTextarea && (
+              <>
+                <FiEdit />
+                <span>Edit mode</span>
+              </>
+            )}
+            {showTextarea && (
+              <>
+                <FiBox />
+                <span>Visual mode</span>
+              </>
+            )}
+          </ShowTextareaButton>
+        </ResultContent>
       </Content>
     </Container>
   );
