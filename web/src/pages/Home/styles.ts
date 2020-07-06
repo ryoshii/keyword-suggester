@@ -57,7 +57,7 @@ export const Result = styled.section`
   flex-wrap: wrap;
   border: 2px solid #111111;
   height: 400px;
-  width: 100%;
+  width: 780px;
   margin-top: 8px;
   padding: 8px;
   align-items: start;
@@ -89,7 +89,7 @@ export const ResultText = styled.textarea`
   flex-wrap: wrap;
   border: 2px solid #111111;
   height: 400px;
-  width: 100%;
+  width: 780px;
   margin-top: 8px;
   padding: 8px;
   align-items: start;
