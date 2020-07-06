@@ -5,8 +5,6 @@ export const Container = styled.div`
 
   display: flex;
   align-items: stretch;
-
-  border: 1px solid red;
 `;
 
 export const Content = styled.div`
