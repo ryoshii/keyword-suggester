@@ -21,47 +21,105 @@ export const Content = styled.div`
 `;
 
 export const Title = styled.h1`
-  margin: 8px;
+  margin: 16px;
+
+  @media (max-width: 800px) {
+    font-size: 20pt;
+  }
+
+  @media (max-width: 640px) {
+    font-size: 18pt;
+  }
 `;
 
 export const Form = styled.form`
   display: flex;
   flex-direction: row;
+
+  @media (max-width: 800px) {
+    flex-direction: column;
+  }
 `;
 
 export const Input = styled.input`
+  align-self: center;
+
   padding: 16px;
   margin-right: 8px;
   border: 1px solid #aaaaaa;
+  width: 620px;
 
   &:focus {
     padding: 15px;
     border: 2px solid #111111;
   }
+
+  @media (max-width: 800px) {
+    margin-right: 0px;
+    width: 580px;
+  }
+
+  @media (max-width: 640px) {
+    width: 320px;
+  }
 `;
 
 export const SearchButton = styled.button`
+  display: flex;
+  justify-content: center;
   padding: 16px;
   border: 1px solid #aaaaaa;
   background: #dddddd;
+  width: 150px;
 
   &:hover {
     padding: 15px;
     border: 2px solid #111111;
   }
+
+  svg {
+    margin-top: auto;
+    margin-bottom: auto;
+  }
+
+  svg + span {
+    margin-left: 8px;
+  }
+
+  @media (max-width: 800px) {
+    margin-top: 8px;
+    width: 100%;
+  }
 `;
 
-export const Result = styled.section`
+export const ResultContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 8px;
+  justify-content: center;
+  width: 780px;
+
+  @media (max-width: 800px) {
+    width: 580px;
+  }
+
+  @media (max-width: 640px) {
+    width: 320px;
+  }
+`;
+
+export const Result = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  border: 2px solid #111111;
+  border: 1px solid #aaaaaa;
   height: 400px;
-  width: 780px;
+  width: 100%;
   margin-top: 8px;
   padding: 8px;
   align-items: start;
   align-content: start;
+  background: #dddddd;
 `;
 
 export const Item = styled.div`
@@ -72,7 +130,10 @@ export const Item = styled.div`
 `;
 
 export const ShowTextareaButton = styled.button`
-  margin-top: 24px;
+  align-self: center;
+
+  display: flex;
+  margin-top: 16px;
   padding: 8px;
   border: 1px solid #aaaaaa;
   background: #dddddd;
@@ -81,17 +142,31 @@ export const ShowTextareaButton = styled.button`
     padding: 7px;
     border: 2px solid #111111;
   }
+
+  svg {
+    margin: auto;
+  }
+
+  svg + span {
+    margin-left: 8px;
+  }
 `;
 
 export const ResultText = styled.textarea`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  border: 2px solid #111111;
+  border: 1px solid #aaaaaa;
   height: 400px;
-  width: 780px;
+  width: 100%;
   margin-top: 8px;
   padding: 8px;
   align-items: start;
   align-content: start;
+  background: #dddddd;
+
+  &:focus {
+    padding: 7px;
+    border: 2px solid #111111;
+  }
 `;
