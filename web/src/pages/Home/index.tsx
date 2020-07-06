@@ -1,5 +1,5 @@
 import React, { useState, useCallback, SyntheticEvent } from 'react';
-import { FiEdit, FiBox, FiSearch } from 'react-icons/fi';
+import { FiEdit, FiBox, FiSearch, FiXCircle } from 'react-icons/fi';
 
 import {
   Container,
@@ -56,6 +56,14 @@ const Home: React.FC = () => {
     [],
   );
 
+  const handleRemoveItem = useCallback(
+    (id) => {
+      const updatedKeywords = keywords.filter((_word, index) => index !== id);
+      setKeywords(updatedKeywords);
+    },
+    [keywords],
+  );
+
   return (
     <Container>
       <Content>
@@ -72,7 +80,12 @@ const Home: React.FC = () => {
           {!showTextarea && (
             <Result>
               {keywords &&
-                keywords.map((word, index) => <Item key={index}>{word}</Item>)}
+                keywords.map((word, index) => (
+                  <Item key={index}>
+                    <span>{word}</span>
+                    <FiXCircle onClick={() => handleRemoveItem(index)} />
+                  </Item>
+                ))}
             </Result>
           )}
 

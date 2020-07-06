@@ -123,10 +123,24 @@ export const Result = styled.div`
 `;
 
 export const Item = styled.div`
+  display: flex;
+  justify-content: center;
   background: #ff4136;
-  padding: 8px 16px 8px 16px;
+  padding: 8px 16px 8px 24px;
   margin-top: 4px;
   margin-left: 4px;
+  border-radius: 50px;
+  cursor: pointer;
+  &:hover {
+    padding: 6px 14px 6px 22px;
+    border: 2px solid #111111;
+  }
+
+  svg {
+    margin-left: 8px;
+    margin-top: auto;
+    margin-bottom: auto;
+  }
 `;
 
 export const ShowTextareaButton = styled.button`
