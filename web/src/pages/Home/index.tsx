@@ -1,6 +1,8 @@
 import React, { useState, useCallback, SyntheticEvent } from 'react';
 import { FiEdit, FiBox, FiSearch, FiXCircle } from 'react-icons/fi';
 
+import api from '../../services/api';
+
 import {
   Container,
   Content,
@@ -16,6 +18,8 @@ import {
 } from './styles';
 
 const Home: React.FC = () => {
+  const [subject, setSubject] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const [showTextarea, setShowTextarea] = useState(false);
   const [keywords, setKeywords] = useState<string[]>([]);
   const [keywordsText, setKeywordsText] = useState<string>('');
@@ -34,24 +38,45 @@ const Home: React.FC = () => {
     setShowTextarea(!showTextarea);
   }, [showTextarea, keywords, keywordsText]);
 
-  const handleSubmit = useCallback((event: SyntheticEvent) => {
-    event.preventDefault();
-    const fakeWords = [
-      'Palavra 1',
-      'Palavra 2',
-      'Palavra 3',
-      'Palavra 4',
-      'Palavra 5',
-      'Palavra 7',
-    ];
+  const handleSubmit = useCallback(
+    (event: SyntheticEvent) => {
+      event.preventDefault();
 
-    setShowTextarea(false);
-    setKeywords([...fakeWords]);
-  }, []);
+      // const fakeWords = [
+      //   'Palavra 1',
+      //   'Palavra 2',
+      //   'Palavra 3',
+      //   'Palavra 4',
+      //   'Palavra 5',
+      //   'Palavra 7',
+      // ];
+
+      async function loadKeywords() {
+        const { data } = await api.get(`?theme=${subject}`);
+        console.log(data);
+        setKeywords([...data]);
+        setIsLoading(false);
+      }
+
+      if (subject.trim() !== '') {
+        setIsLoading(true);
+        loadKeywords();
+        setShowTextarea(false);
+      }
+    },
+    [subject],
+  );
 
   const handleTextareaChange = useCallback(
     (event: React.FormEvent<HTMLTextAreaElement>) => {
       setKeywordsText(event.currentTarget.value);
+    },
+    [],
+  );
+
+  const handleSubjectChange = useCallback(
+    (event: React.FormEvent<HTMLInputElement>) => {
+      setSubject(event.currentTarget.value);
     },
     [],
   );
@@ -69,8 +94,12 @@ const Home: React.FC = () => {
       <Content>
         <Title># Keyword suggester</Title>
         <Form onSubmit={handleSubmit}>
-          <Input name="param" placeholder="subject" />
-          <SearchButton type="submit">
+          <Input
+            name="param"
+            placeholder="subject"
+            onChange={handleSubjectChange}
+          />
+          <SearchButton type="submit" disabled={isLoading}>
             <FiSearch />
             <span>Search</span>
           </SearchButton>
@@ -97,7 +126,10 @@ const Home: React.FC = () => {
             />
           )}
 
-          <ShowTextareaButton onClick={handleToogleShowTextarea}>
+          <ShowTextareaButton
+            onClick={handleToogleShowTextarea}
+            disabled={isLoading}
+          >
             {!showTextarea && (
               <>
                 <FiEdit />
