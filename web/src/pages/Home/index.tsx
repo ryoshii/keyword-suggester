@@ -52,9 +52,16 @@ const Home: React.FC = () => {
       // ];
 
       async function loadKeywords() {
-        const { data } = await api.get(`?theme=${subject}`);
-        setKeywords([...data]);
-        setIsLoading(false);
+        try {
+          const { data } = await api.get(`?theme=${subject}`);
+          setKeywords([...data]);
+          setIsLoading(false);
+        } catch (err) {
+          console.log(err);
+          setKeywords([]);
+        } finally {
+          setIsLoading(false);
+        }
       }
 
       if (subject.trim() !== '') {
