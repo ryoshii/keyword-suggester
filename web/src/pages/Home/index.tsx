@@ -54,7 +54,8 @@ const Home: React.FC = () => {
       async function loadKeywords() {
         try {
           const { data } = await api.get(`?theme=${subject}`);
-          setKeywords([...data]);
+          const keywordsLoaded: string[] = Object.values(data);
+          setKeywords(keywordsLoaded);
           setIsLoading(false);
         } catch (err) {
           console.log(err);
