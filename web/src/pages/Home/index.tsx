@@ -53,7 +53,6 @@ const Home: React.FC = () => {
 
       async function loadKeywords() {
         const { data } = await api.get(`?theme=${subject}`);
-        console.log(data);
         setKeywords([...data]);
         setIsLoading(false);
       }
