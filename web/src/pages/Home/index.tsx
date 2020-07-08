@@ -51,14 +51,14 @@ const Home: React.FC = () => {
       //   'Palavra 7',
       // ];
 
-      async function loadKeywords() {
+      async function loadKeywords(): Promise<void> {
         try {
           const { data } = await api.get(`?theme=${subject}`);
-          const keywordsLoaded: string[] = Object.values(data);
+          const keywordsLoaded: string[] = data.RESULTS;
           setKeywords(keywordsLoaded);
           setIsLoading(false);
         } catch (err) {
-          console.log(err);
+          console.log(err); // eslint-disable-line
           setKeywords([]);
         } finally {
           setIsLoading(false);
