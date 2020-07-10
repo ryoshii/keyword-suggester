@@ -1,5 +1,5 @@
 import React, { useState, useCallback, SyntheticEvent } from 'react';
-import { FiEdit, FiBox, FiSearch, FiXCircle } from 'react-icons/fi';
+import { FiEdit, FiBox, FiSearch, FiXCircle, FiHash } from 'react-icons/fi';
 
 import api from '../../services/api';
 
@@ -13,8 +13,10 @@ import {
   ResultContent,
   Result,
   Item,
-  ShowTextareaButton,
   ResultText,
+  Actions,
+  ShowTextareaButton,
+  AddHashtagPrefixButton,
 } from './styles';
 
 const Home: React.FC = () => {
@@ -23,20 +25,31 @@ const Home: React.FC = () => {
   const [showTextarea, setShowTextarea] = useState(false);
   const [keywords, setKeywords] = useState<string[]>([]);
   const [keywordsText, setKeywordsText] = useState<string>('');
+  const [addPrefixHash, setAddPrefixHash] = useState(false);
 
   const handleToogleShowTextarea = useCallback(() => {
     if (!showTextarea) {
-      const compiledKeywords = keywords.join(',');
-      setKeywordsText(compiledKeywords);
+      let compiledKeywordsToText;
+      if (addPrefixHash) {
+        compiledKeywordsToText = `#${keywords.join(',#')}`;
+      } else {
+        compiledKeywordsToText = keywords.join(',');
+      }
+      setKeywordsText(compiledKeywordsToText);
     } else {
-      const compiledKeywordsText = keywordsText.split(',').filter((word) => {
+      let compiledKeywordsToArray = keywordsText.split(',').filter((word) => {
         return word.trim() !== '';
       });
-      setKeywords(compiledKeywordsText);
+
+      compiledKeywordsToArray = compiledKeywordsToArray.map((word) => {
+        return word.replace(/#/g, '');
+      });
+
+      setKeywords(compiledKeywordsToArray);
     }
 
     setShowTextarea(!showTextarea);
-  }, [showTextarea, keywords, keywordsText]);
+  }, [showTextarea, keywords, keywordsText, addPrefixHash]);
 
   const handleSubmit = useCallback(
     (event: SyntheticEvent) => {
@@ -96,6 +109,10 @@ const Home: React.FC = () => {
     [keywords],
   );
 
+  const handleToogleAddPrefix = useCallback(() => {
+    setAddPrefixHash(!addPrefixHash);
+  }, [addPrefixHash]);
+
   return (
     <Container>
       <Content>
@@ -118,7 +135,10 @@ const Home: React.FC = () => {
               {keywords &&
                 keywords.map((word, index) => (
                   <Item key={index}>
-                    <span>{word}</span>
+                    <span>
+                      {addPrefixHash && '#'}
+                      {word}
+                    </span>
                     <FiXCircle onClick={() => handleRemoveItem(index)} />
                   </Item>
                 ))}
@@ -133,23 +153,33 @@ const Home: React.FC = () => {
             />
           )}
 
-          <ShowTextareaButton
-            onClick={handleToogleShowTextarea}
-            disabled={isLoading}
-          >
+          <Actions>
             {!showTextarea && (
-              <>
-                <FiEdit />
-                <span>Edit mode</span>
-              </>
+              <AddHashtagPrefixButton
+                onClick={handleToogleAddPrefix}
+                selected={addPrefixHash}
+              >
+                <FiHash />
+              </AddHashtagPrefixButton>
             )}
-            {showTextarea && (
-              <>
-                <FiBox />
-                <span>Visual mode</span>
-              </>
-            )}
-          </ShowTextareaButton>
+            <ShowTextareaButton
+              onClick={handleToogleShowTextarea}
+              disabled={isLoading}
+            >
+              {!showTextarea && (
+                <>
+                  <FiEdit />
+                  <span>Text mode</span>
+                </>
+              )}
+              {showTextarea && (
+                <>
+                  <FiBox />
+                  <span>Edit mode</span>
+                </>
+              )}
+            </ShowTextareaButton>
+          </Actions>
         </ResultContent>
       </Content>
     </Container>

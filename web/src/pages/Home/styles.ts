@@ -1,4 +1,8 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+
+interface AddHashtagPrefixButtonProps {
+  selected: boolean;
+}
 
 export const Container = styled.div`
   height: 100vh;
@@ -141,29 +145,6 @@ export const Item = styled.div`
   }
 `;
 
-export const ShowTextareaButton = styled.button`
-  align-self: center;
-
-  display: flex;
-  margin-top: 16px;
-  padding: 8px;
-  border: 1px solid #aaaaaa;
-  background: #dddddd;
-
-  &:hover {
-    padding: 7px;
-    border: 2px solid #111111;
-  }
-
-  svg {
-    margin: auto;
-  }
-
-  svg + span {
-    margin-left: 8px;
-  }
-`;
-
 export const ResultText = styled.textarea`
   display: flex;
   flex-direction: row;
@@ -178,6 +159,71 @@ export const ResultText = styled.textarea`
   background: #dddddd;
 
   &:focus {
+    padding: 7px;
+    border: 2px solid #111111;
+  }
+`;
+
+export const Actions = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  margin-top: 8px;
+
+  justify-content: flex-end;
+
+  button + button {
+    margin-left: 8px;
+  }
+`;
+
+export const ShowTextareaButton = styled.button`
+  height: 42px;
+  display: flex;
+  padding: 8px;
+  border: 1px solid #aaaaaa;
+  background: #dddddd;
+
+  &:hover {
+    padding: 7px;
+    border: 2px solid #111111;
+  }
+
+  svg {
+    margin: auto;
+  }
+
+  svg + span {
+    margin: auto 8px;
+  }
+`;
+
+export const AddHashtagPrefixButton = styled.button<
+  AddHashtagPrefixButtonProps
+>`
+  height: 42px;
+  display: flex;
+  padding: 8px;
+  border: 1px solid #aaaaaa;
+  background: #dddddd;
+
+  svg {
+    margin: auto;
+  }
+
+  svg + span {
+    margin: auto 8px;
+  }
+
+  color: #aaaaaa;
+
+  ${(props) =>
+    props.selected &&
+    css`
+      color: #111111;
+    `}
+
+  &:hover {
     padding: 7px;
     border: 2px solid #111111;
   }
