@@ -42,7 +42,7 @@ const Home: React.FC = () => {
       });
 
       compiledKeywordsToArray = compiledKeywordsToArray.map((word) => {
-        return word.replace(/#/g, '');
+        return word.trim().replace(/#/g, '');
       });
 
       setKeywords(compiledKeywordsToArray);

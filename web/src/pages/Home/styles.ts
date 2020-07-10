@@ -122,6 +122,8 @@ export const Result = styled.div`
   align-items: start;
   align-content: start;
   background: #dddddd;
+
+  overflow: auto;
 `;
 
 export const Item = styled.div`
